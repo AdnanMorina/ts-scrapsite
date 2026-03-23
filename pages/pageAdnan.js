@@ -9,11 +9,11 @@
     spotifyStartAt: 0,
     // Drop photos into images/imgAdnan/ and reference them like: /images/imgAdnan/filename.jpg
     photos: [
-      { src: "/images/imgAdnan/photo-1.jpg", caption: "my favorite smile" },
-      { src: "/images/imgAdnan/photo-2.jpg", caption: "thank you Abbey!" },
-      { src: "/images/imgAdnan/photo-3.jpg", caption: "first date!" },
-      { src: "/images/imgAdnan/photo-4.jpg", caption: "goofball" },
-      { src: "/images/imgAdnan/photo-5.jpg", caption: "no view compares" },
+      { src: "/images/imgAdnan/photo-1.JPG", caption: "my favorite smile" },
+      { src: "/images/imgAdnan/photo-2.JPG", caption: "thank you Abbey!" },
+      { src: "/images/imgAdnan/photo-3.JPG", caption: "first date!" },
+      { src: "/images/imgAdnan/photo-4.JPG", caption: "goofball" },
+      { src: "/images/imgAdnan/photo-5.JPG", caption: "no view compares" },
     ],
     message: `Dear Thalia,
 

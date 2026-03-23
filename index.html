@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Thalia ❤️</title>
+
+  <!-- Fonts: Cormorant Garamond (romantic display serif) + Jost (clean modern sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- React 18 (UMD) + Babel for JSX -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- ============================================================
+       PAGES
+       ─────────────────────────────────────────────────────────────
+       Each line below loads one scrapbook page.
+       To add a new page:
+         1. Copy pages/_template.js → pages/page-yourname.js
+         2. Fill in your content
+         3. Add a <script> line below (order = display order)
+  ============================================================ -->
+  <!-- ============================================================
+       INTRO SECTIONS  (shown between the homepage and the scrapbook)
+       ─────────────────────────────────────────────────────────────
+       To add a transitional page:
+         1. Copy sections/_template.js → sections/section-yourname.js
+         2. Fill in your content
+         3. Uncomment (or add) a <script> line below — order = display order
+  ============================================================ -->
+  <!-- <script src="sections/section-1.js"></script> -->
+
+  <!-- ============================================================
+       SCRAPBOOK PAGES - DETERMINES ORDER OF PAGES
+  ============================================================ -->
+  <script src="pages/page-1.js"></script>
+  <script src="pages/page-2.js"></script>
+  <script src="pages/pageAdnan.js"></script>
+  <!-- <script src="pages/page-4.js"></script> -->
+  <!-- <script src="pages/page-5.js"></script> -->
+
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────── */
+    :root {
+      --rose:        #C4686A;
+      --rose-mid:    #D98B8B;
+      --rose-light:  #EBBCBB;
+      --rose-pale:   #F8ECEC;
+      --warm:        #F6EDE9;
+      --text:        #18110F;
+      --text-soft:   #7A6B67;
+      --border:      #EEE0DC;
+      --shadow-rose: rgba(196, 104, 106, 0.13);
+      --bg:          #ffffff;
+      --surface:     #ffffff;
+      --wire:        #C0B0AC;
+    }
+
+    /* ─── Dark Mode Overrides ────────────────────────────────────── */
+    [data-theme="dark"] {
+      --rose:        #E08888;
+      --rose-mid:    #C97070;
+      --rose-light:  #9A5555;
+      --rose-pale:   #2C1A1A;
+      --warm:        #1E1414;
+      --text:        #F0E8E6;
+      --text-soft:   #A08888;
+      --border:      #3A2828;
+      --shadow-rose: rgba(224, 136, 136, 0.12);
+      --bg:          #141010;
+      --surface:     #1E1616;
+      --wire:        #5A4444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+      /* Barely-visible paper grain */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* ─── Header ─────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      padding: 28px 24px 10px;
+    }
+
+    /* Replace "Thalia" in the <h1> inside App below */
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.65rem, 3.8vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+    .header-title span { color: var(--rose); font-style: italic; }
+
+    .header-subtitle {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .header-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 10px auto 0;
+      max-width: 200px;
+    }
+    .header-ornament-line      { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--rose-light)); }
+    .header-ornament-line.flip { background: linear-gradient(90deg, var(--rose-light), transparent); }
+    .header-ornament-dot       { font-size: 0.75rem; color: var(--rose-light); }
+
+    /* ─── Polaroid Strip ─────────────────────────────────────────── */
+    .strip-outer {
+      position: relative;
+      padding: 8px 0 36px;
+      overflow: hidden;
+    }
+
+    .strip-wire {
+      position: absolute;
+      top: 36px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 2%,
+        var(--wire) 12%,
+        var(--wire) 88%,
+        transparent 98%
+      );
+      transition: background 0.35s ease;
+    }
+
+    .polaroid-strip {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: clamp(10px, 1.4vw, 18px);
+      padding: 0 clamp(16px, 4vw, 60px);
+      flex-wrap: wrap;
+    }
+
+    .polaroid-hanger {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform-origin: top center;
+      cursor: pointer;
+    }
+
+    @keyframes swing-a { 0%,100%{transform:rotate(-2.5deg)} 50%{transform:rotate(2deg)}   }
+    @keyframes swing-b { 0%,100%{transform:rotate(1.8deg)}  50%{transform:rotate(-2.8deg)} }
+    @keyframes swing-c { 0%,100%{transform:rotate(-1deg)}   50%{transform:rotate(3.2deg)}  }
+    @keyframes swing-d { 0%,100%{transform:rotate(2.8deg)}  50%{transform:rotate(-1.2deg)} }
+    @keyframes swing-e { 0%,100%{transform:rotate(-3deg)}   50%{transform:rotate(1.2deg)}  }
+
+    .polaroid-hanger:nth-child(1) { animation: swing-a 4.4s ease-in-out infinite; }
+    .polaroid-hanger:nth-child(2) { animation: swing-b 3.9s ease-in-out infinite; animation-delay: -1.1s; }
+    .polaroid-hanger:nth-child(3) { animation: swing-c 4.7s ease-in-out infinite; animation-delay: -2.2s; }
+    .polaroid-hanger:nth-child(4) { animation: swing-d 3.7s ease-in-out infinite; animation-delay: -0.7s; }
+    .polaroid-hanger:nth-child(5) { animation: swing-e 4.2s ease-in-out infinite; animation-delay: -1.8s; }
+
+    .clip {
+      width: 10px; height: 16px;
+      background: linear-gradient(160deg, #D8CECA 0%, #B8AEAA 100%);
+      border-radius: 2px 2px 0 0;
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      position: relative; z-index: 2;
+    }
+
+    .polaroid-card {
+      background: var(--surface);
+      padding: 10px 10px 36px;
+      transition: background 0.35s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
+      position: relative;
+      transition:
+        box-shadow 0.25s ease,
+        transform  0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+    .polaroid-hanger:hover .polaroid-card {
+      box-shadow: 0 10px 32px rgba(196,104,106,0.28), 0 2px 8px rgba(0,0,0,0.08);
+      transform: scale(1.05);
+    }
+
+    .polaroid-photo {
+      width:  clamp(155px, 17vw, 200px);
+      height: clamp(155px, 17vw, 200px);
+      object-fit: cover;
+      display: block;
+      background: var(--rose-pale);
+    }
+
+    .polaroid-tint {
+      position: absolute;
+      top: 10px; left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 46px);
+      background: linear-gradient(135deg, rgba(196,104,106,0.08) 0%, transparent 60%);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .polaroid-hover-icon {
+      position: absolute;
+      top: 10px; left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 46px);
+      background: rgba(196,104,106,0.14);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .polaroid-hanger:hover .polaroid-hover-icon { opacity: 1; }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; font-style: italic;
+      color: var(--text-soft);
+      padding: 0 6px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ─── Lightbox ───────────────────────────────────────────────── */
+    /* Warm frosted-glass backdrop — page stays visible */
+    .lightbox-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(252, 246, 244, 0.72);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    }
+    [data-theme="dark"] .lightbox-backdrop {
+      background: rgba(20, 10, 10, 0.78);
+    }
+    .lightbox-backdrop {
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      /* Opacity is driven by inline style for the zoom-from-position animation */
+      transition: opacity 0.3s ease;
+    }
+
+    /* Zoom container — transform driven by inline style */
+    .lightbox-zoom {
+      position: relative;
+      transform-origin: center center;
+    }
+
+    .lightbox-polaroid {
+      background: var(--surface);
+      padding: 14px 14px 44px;
+      transition: background 0.35s ease;
+      box-shadow:
+        0 8px 32px rgba(196,104,106,0.18),
+        0 2px 8px rgba(0,0,0,0.08);
+    }
+    .lightbox-img {
+      display: block;
+      object-fit: cover;
+    }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 10px; left: 0; right: 0;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: var(--text-soft); font-size: 1.38rem;
+    }
+    .lightbox-close {
+      position: absolute; top: -14px; right: -14px;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface); border: none; cursor: pointer;
+      transition: background 0.35s ease;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); font-size: 14px;
+      box-shadow: 0 2px 12px rgba(196,104,106,0.22), 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .lightbox-close:hover { transform: scale(1.12) rotate(90deg); background: var(--rose-pale); }
+
+    /* ─── Main Content ───────────────────────────────────────────── */
+    .main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 clamp(16px,4vw,32px) 28px;
+    }
+
+    .page-chapter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem,3.5vw,2.2rem);
+      font-weight: 500; font-style: italic;
+      color: var(--rose);
+      text-align: center;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── Spotify ─────────────────────────────────────────────────── */
+    .spotify-wrap {
+      margin-bottom: 22px;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 12px var(--shadow-rose), 0 0 0 1px var(--border);
+    }
+    .spotify-wrap iframe { display: block; }
+
+    /* ─── Message Card ───────────────────────────────────────────── */
+    .message-outer {
+      width: calc(100% - 48px);
+      max-width: 760px;
+      margin: 0 auto 28px;
+    }
+    .message-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(20px,3vw,36px) clamp(20px,4vw,48px);
+      min-height: 280px;
+      position: relative;
+      box-shadow:
+        0 8px 40px rgba(196,104,106,0.10),
+        0 2px 8px rgba(0,0,0,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+    .message-card::before {
+      content: '\201C';
+      position: absolute; top: -8px; left: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6.5rem; line-height: 1;
+      color: var(--rose-light);
+      opacity: 0.7;
+      user-select: none; pointer-events: none;
+    }
+    .message-text-wrap {
+      position: relative; /* ghost reserves height; live text overlays it */
+    }
+    .message-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.15rem,1.8vw,1.35rem);
+      font-weight: 400; line-height: 1.9;
+      color: var(--text);
+      white-space: pre-wrap;
+      position: relative; z-index: 1;
+    }
+    /* Ghost text: invisible but holds the card's final height from the start */
+    .message-text-ghost {
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
+    }
+    /* Live typewriter text: overlays the ghost exactly */
+    .message-text-live {
+      position: absolute;
+      inset: 0;
+    }
+    .typewriter-cursor {
+      display: inline-block; width: 2px; height: 1.15em;
+      background: var(--rose); margin-left: 2px;
+      vertical-align: text-bottom; border-radius: 1px;
+      animation: blink 0.75s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ─── Navigation ─────────────────────────────────────────────── */
+    .nav-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 760px;
+      margin: 30px auto 56px;
+      padding: 0 clamp(16px,4vw,32px);
+    }
+    .nav-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.74rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--rose); background: transparent;
+      border: 1.5px solid var(--rose-light); border-radius: 999px;
+      padding: 10px 24px; cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      user-select: none;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--rose-pale); border-color: var(--rose); transform: translateY(-2px);
+    }
+    .nav-btn:active:not(:disabled) { transform: translateY(0); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    .nav-indicator {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-style: italic;
+      color: var(--text-soft); letter-spacing: 0.04em;
+    }
+
+    /* ─── Page transition ────────────────────────────────────────── */
+    .page-fade { transition: opacity 0.32s ease, transform 0.32s ease; }
+
+    /* ─── Heart Particles ────────────────────────────────────────── */
+    .hearts-layer {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .heart-particle {
+      position: absolute; bottom: -60px; opacity: 0;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0%  { opacity:0;   transform:translateY(0)      rotate(0deg)  scale(0.7); }
+      8%  { opacity:0.55; }
+      75% { opacity:0.25; }
+      100%{ opacity:0;   transform:translateY(-108vh) rotate(25deg) scale(1.3); }
+    }
+
+    /* ─── Fireworks ──────────────────────────────────────────────── */
+    .fireworks-layer {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .firework {
+      position: absolute;
+      width: 0; height: 0;
+    }
+    .firework-spark {
+      position: absolute;
+      top: -5px; left: -5px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      animation: fw-fly ease-out infinite;
+    }
+    @keyframes fw-fly {
+      0%      { transform: translate(0, 0) scale(1.8); opacity: 1; }
+      45%     { opacity: 0.6; }
+      55%     { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+      55.01%  { transform: translate(0, 0) scale(0); opacity: 0; }
+      100%    { transform: translate(0, 0) scale(0); opacity: 0; }
+    }
+
+    /* ─── Password Gate ─────────────────────────────────────────── */
+    .pw-gate {
+      min-height: 55vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 24px;
+    }
+    .pw-card {
+      text-align: center;
+      max-width: 380px; width: 100%;
+      padding: clamp(32px,5vw,52px) clamp(28px,6vw,48px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(196,104,106,0.10), 0 2px 8px rgba(0,0,0,0.05),
+                  inset 0 1px 0 rgba(255,255,255,0.7);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+    .pw-card.shake { animation: pw-shake 0.45s ease; }
+    @keyframes pw-shake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-9px); }
+      40%,80% { transform: translateX(9px); }
+    }
+    .pw-lock { font-size: 2.4rem; margin-bottom: 16px; animation: pw-bob 2.5s ease-in-out infinite; }
+    @keyframes pw-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    .pw-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      font-weight: 600; font-style: italic;
+      color: var(--rose); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .pw-hint {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem; color: var(--text-soft);
+      margin-bottom: 28px; line-height: 1.5;
+    }
+    .pw-input {
+      width: 100%; box-sizing: border-box;
+      padding: 11px 16px;
+      font-family: 'Jost', sans-serif; font-size: 0.95rem; letter-spacing: 0.08em;
+      background: var(--bg); color: var(--text);
+      border: 1.5px solid var(--border); border-radius: 10px;
+      outline: none; text-align: center;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pw-input:focus { border-color: var(--rose-light); box-shadow: 0 0 0 3px rgba(196,104,106,0.12); }
+    .pw-input.wrong { border-color: var(--rose); }
+    .pw-error { font-family: 'Jost', sans-serif; font-size: 0.77rem; color: var(--rose); margin: 8px 0 0; letter-spacing: 0.04em; }
+    .pw-btn {
+      margin-top: 20px; width: 100%;
+      font-family: 'Jost', sans-serif; font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--rose); background: transparent;
+      border: 1.5px solid var(--rose-light); border-radius: 999px;
+      padding: 11px 24px; cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease,
+                  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pw-btn:hover  { background: var(--rose-pale); border-color: var(--rose); transform: translateY(-2px); }
+    .pw-btn:active { transform: translateY(0); }
+
+    /* ─── Hamburger + Slide-in Nav Menu ─────────────────────────── */
+    .hamburger-btn {
+      position: fixed;
+      top: 18px; left: 20px;
+      z-index: 700;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px var(--shadow-rose), 0 1px 3px rgba(0,0,0,0.08);
+      transition: background 0.35s ease, border-color 0.35s ease, transform 0.2s ease;
+    }
+    .hamburger-btn:hover  { transform: scale(1.08); }
+    .hamburger-btn:active { transform: scale(0.94); }
+    .hamburger-btn svg    { display: block; }
+
+    .menu-backdrop {
+      position: fixed; inset: 0;
+      z-index: 800;
+      background: rgba(0,0,0,0.22);
+      animation: menuFadeIn 0.2s ease forwards;
+    }
+    @keyframes menuFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .menu-panel {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100%; width: 272px; max-width: 85vw;
+      z-index: 801;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      box-shadow: 6px 0 40px rgba(196,104,106,0.13), 1px 0 8px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column;
+      animation: menuSlideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      overflow-y: auto;
+    }
+    @keyframes menuSlideIn {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(0); }
+    }
+    [data-theme="dark"] .menu-panel {
+      box-shadow: 6px 0 40px rgba(0,0,0,0.4);
+    }
+
+    .menu-head {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .menu-head-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-style: italic;
+      color: var(--rose); line-height: 1.2;
+    }
+    .menu-head-sub {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.64rem; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-top: 3px;
+    }
+    .menu-section-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      padding: 18px 24px 6px;
+    }
+    .menu-item {
+      display: flex; align-items: center; gap: 12px;
+      width: 100%; padding: 10px 24px;
+      background: none; border: none;
+      cursor: pointer; text-align: left;
+      transition: background 0.15s ease;
+    }
+    .menu-item:hover  { background: var(--rose-pale); }
+    .menu-item.active { background: var(--rose-pale); }
+    .menu-item-num {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem; color: var(--rose-light);
+      min-width: 18px; flex-shrink: 0;
+    }
+    .menu-item-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; line-height: 1.2;
+      color: var(--text);
+    }
+    .menu-item.active .menu-item-label { color: var(--rose); font-weight: 600; }
+
+    /* ─── Fixed Top-Right Buttons ───────────────────────────────── */
+    .home-btn {
+      position: fixed;
+      top: 18px; right: 68px;
+      z-index: 500;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px var(--shadow-rose), 0 1px 3px rgba(0,0,0,0.08);
+      transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.25s ease;
+    }
+    .home-btn:hover {
+      transform: scale(1.12);
+      box-shadow: 0 4px 18px var(--shadow-rose);
+    }
+    .home-btn:active { transform: scale(0.94); }
+    .home-btn svg { display: block; }
+
+    /* ─── Dark Mode Toggle ───────────────────────────────────────── */
+    .theme-toggle {
+      position: fixed;
+      top: 18px; right: 20px;
+      z-index: 500;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px var(--shadow-rose), 0 1px 3px rgba(0,0,0,0.08);
+      transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.25s ease;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.12) rotate(-15deg);
+      box-shadow: 0 4px 18px var(--shadow-rose);
+    }
+    .theme-toggle:active { transform: scale(0.94); }
+    .theme-toggle svg { display: block; }
+
+    /* ─── Intro Sections ─────────────────────────────────────────── */
+    .intro-screen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 24px 48px;
+    }
+    .intro-card {
+      width: 100%; max-width: 680px;
+      text-align: center;
+    }
+    .intro-subtitle {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-soft); margin-bottom: 8px;
+    }
+    .intro-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600; font-style: italic;
+      letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--rose); margin-bottom: 20px;
+    }
+    .intro-ornament {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin: 0 auto 28px; max-width: 200px;
+    }
+    .intro-ornament-line      { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--rose-light)); }
+    .intro-ornament-line.flip { background: linear-gradient(90deg, var(--rose-light), transparent); }
+    .intro-ornament-dot       { font-size: 0.75rem; color: var(--rose-light); }
+    .intro-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      line-height: 1.9; color: var(--text);
+      margin-bottom: 40px; white-space: pre-wrap;
+    }
+    .intro-nav { display: flex; justify-content: center; gap: 16px; }
+
+    /* ─── Mobile ─────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      /* Polaroid strip — horizontal scroll so all 5 are reachable */
+      .strip-outer {
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 24px;
+      }
+      .strip-wire { display: none; }
+      .polaroid-strip {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0 16px 0 16px;
+        /* trailing breathing room after the last polaroid */
+        padding-right: 32px;
+      }
+      .polaroid-photo { width: 130px; height: 130px; }
+
+      /* Message card */
+      .message-card { min-height: 180px; }
+      .message-card::before { font-size: 3.5rem; top: -4px; }
+
+      /* Nav */
+      .nav-bar { padding: 0 16px; }
+      .nav-btn  { padding: 9px 14px; font-size: 0.7rem; }
+
+      /* Fixed top-right buttons */
+      .theme-toggle  { top: 14px; right: 14px; width: 36px; height: 36px; }
+      .home-btn      { top: 14px; right: 58px;  width: 36px; height: 36px; }
+      .hamburger-btn { top: 14px; left: 14px;  width: 36px; height: 36px; }
+
+      /* Intro nav */
+      .intro-nav { flex-wrap: wrap; gap: 12px; }
+    }
+
+    /* ─── Homepage ───────────────────────────────────────────────── */
+    .home-screen {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg);
+      overflow: hidden;
+      z-index: 200;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .home-screen.exiting {
+      opacity: 0;
+      transform: scale(1.025);
+      pointer-events: none;
+    }
+
+
+    /* The note card */
+    .home-note {
+      position: relative; z-index: 10;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: clamp(36px,5vw,56px) clamp(32px,6vw,64px);
+      width: calc(100% - 48px);
+      max-width: 960px;
+      text-align: center;
+    }
+
+    .home-note-ornament {
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+      opacity: 0.7;
+      letter-spacing: 0.2em;
+    }
+    .home-note-for {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+    .home-note-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 7vw, 3.8rem);
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--rose);
+      margin-bottom: 24px;
+    }
+    .home-note-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.05rem, 2.2vw, 1.22rem);
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .home-enter-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rose);
+      background: transparent;
+      border: 1.5px solid var(--rose-light);
+      border-radius: 999px;
+      padding: 12px 30px;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .home-enter-btn:hover {
+      background: var(--rose-pale);
+      border-color: var(--rose);
+      transform: translateY(-2px);
+    }
+    .home-enter-btn:active { transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    /* ── Data loaded from external script tags ── */
+    const pages          = window.__SCRAPBOOK_PAGES__  || [];
+    const introSections  = window.__INTRO_SECTIONS__   || [];
+
+    /* ================================================================
+       HEART PARTICLES — rendered only on the last page
+    ================================================================ */
+    const HeartParticles = () => {
+      const particles = useMemo(() => (
+        Array.from({ length: 36 }, (_, i) => ({
+          id:       i,
+          left:     `${2 + Math.random() * 96}%`,
+          delay:    `${(Math.random() * 7).toFixed(2)}s`,
+          duration: `${(4.5 + Math.random() * 4).toFixed(2)}s`,
+          size:     `${23 + Math.floor(Math.random() * 26)}px`,
+          glyph:    ['❤️','🩷','💕','✨','🌸'][Math.floor(Math.random() * 5)],
+        }))
+      ), []);
+
+      return (
+        <div className="hearts-layer" aria-hidden="true">
+          {particles.map(p => (
+            <div key={p.id} className="heart-particle"
+              style={{ left: p.left, fontSize: p.size, animationDelay: p.delay, animationDuration: p.duration }}>
+              {p.glyph}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    /* ================================================================
+       FIREWORKS — rendered on pages with fireworks: true
+    ================================================================ */
+    const COLORS = ['#F5A623','#C4686A','#E8B4B8','#FFD700','#FF85A1','#A8D8EA','#FFFFFF'];
+    const Fireworks = () => {
+      const bursts = useMemo(() => (
+        Array.from({ length: 18 }, (_, i) => {
+          const SPARKS = 10;
+          const dist = 80 + Math.random() * 70;
+          return {
+            id: i,
+            left: `${8 + Math.random() * 84}%`,
+            top:  `${8 + Math.random() * 58}%`,
+            delay:    `${(Math.random() * 7).toFixed(2)}s`,
+            duration: `${(2.8 + Math.random() * 2.5).toFixed(2)}s`,
+            sparks: Array.from({ length: SPARKS }, (_, j) => {
+              const angle = (j / SPARKS) * Math.PI * 2;
+              return {
+                dx: (Math.cos(angle) * dist).toFixed(1),
+                dy: (Math.sin(angle) * dist).toFixed(1),
+                color: COLORS[(i + j) % COLORS.length],
+              };
+            }),
+          };
+        })
+      ), []);
+
+      return (
+        <div className="fireworks-layer" aria-hidden="true">
+          {bursts.map(b => (
+            <div key={b.id} className="firework" style={{ left: b.left, top: b.top }}>
+              {b.sparks.map((s, j) => (
+                <span key={j} className="firework-spark" style={{
+                  '--dx': `${s.dx}px`,
+                  '--dy': `${s.dy}px`,
+                  background: s.color,
+                  animationDelay:    b.delay,
+                  animationDuration: b.duration,
+                }} />
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    /* ================================================================
+       LIGHTBOX
+    ================================================================ */
+    const Lightbox = ({ photo, fromRect, onClose }) => {
+      // 'start'   → element is at the thumbnail's position (no transition yet)
+      // 'open'    → element has transitioned to center
+      // 'closing' → element shrinks back and fades out
+      const [phase, setPhase] = useState('start');
+
+      // Advance to 'open' after one paint so the browser captures the start state
+      useEffect(() => {
+        const raf = requestAnimationFrame(() => requestAnimationFrame(() => setPhase('open')));
+        return () => cancelAnimationFrame(raf);
+      }, []);
+
+      const close = () => {
+        setPhase('closing');
+        setTimeout(onClose, 280);
+      };
+
+      useEffect(() => {
+        const fn = (e) => { if (e.key === 'Escape') close(); };
+        window.addEventListener('keydown', fn);
+        return () => window.removeEventListener('keydown', fn);
+      }, []);
+
+      // Final size of the enlarged photo — targets 25% larger than the original
+      // constraint, but hard-clamps so the full polaroid card always fits on screen.
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const margin   = 28; // minimum gap from any viewport edge
+      const padW     = 28; // card horizontal padding (14px × 2)
+      const padH     = 58; // card vertical padding  (14px top + 44px bottom)
+      const target   = Math.round(Math.min(vw * 0.52, vh * 0.58, 400) * 1.25);
+      const maxByVW  = vw - margin * 2 - padW;
+      const maxByVH  = vh - margin * 2 - padH;
+      const finalImgSize = Math.min(target, maxByVW, maxByVH);
+
+      // Full polaroid card width/height (padding: 14px sides, 14px top, 44px bottom)
+      const cardW = finalImgSize + 28;
+      const cardH = finalImgSize + 58;
+
+      // Center of the thumbnail that was clicked
+      const fromCx = fromRect.left + fromRect.width  / 2;
+      const fromCy = fromRect.top  + fromRect.height / 2;
+
+      // Offset needed so the zoomed card appears to start at the thumbnail
+      const dx = fromCx - vw / 2;
+      const dy = fromCy - vh / 2;
+
+      // Scale: thumbnail width relative to final card width
+      const scale = fromRect.width / cardW;
+
+      const atStart   = phase === 'start';
+      const isClosing = phase === 'closing';
+      const atEdge    = atStart || isClosing;
+
+      return (
+        <div
+          className="lightbox-backdrop"
+          style={{ opacity: atStart ? 0 : isClosing ? 0 : 1 }}
+          onClick={close}
+          role="dialog" aria-modal="true"
+        >
+          <div
+            className="lightbox-zoom"
+            style={{
+              transform: atEdge
+                ? `translate(${dx}px, ${dy}px) scale(${scale})`
+                : 'translate(0, 0) scale(1)',
+              // No transition on initial paint; smooth in on open; quick ease-in on close
+              transition: atStart   ? 'none'
+                        : isClosing ? 'transform 0.26s ease-in, opacity 0.26s ease-in'
+                        :             'transform 0.42s cubic-bezier(0.34, 1.18, 0.64, 1)',
+              opacity: isClosing ? 0 : 1,
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="lightbox-polaroid" style={{ width: cardW }}>
+              <img
+                src={photo.src}
+                alt={photo.caption || 'photo'}
+                className="lightbox-img"
+                style={{
+                  width: finalImgSize,
+                  height: finalImgSize,
+                  objectPosition: photo.crop || 'center',
+                  objectFit: photo.fit || 'cover',
+                }}
+              />
+              {photo.caption && <p className="lightbox-caption">{photo.caption}</p>}
+            </div>
+            <button className="lightbox-close" onClick={close} aria-label="Close">✕</button>
+          </div>
+        </div>
+      );
+    };
+
+    /* ================================================================
+       POLAROID STRIP — 5 photos per page
+       Static tilt + vertical offset give an organic, unaligned look.
+    ================================================================ */
+    const TILTS   = [-2.8, 1.6, -1.2, 3.0, -2.0];
+    const OFFSETS = [22, 10, 26, 8, 18];
+
+    const PolaroidStrip = ({ photos }) => {
+      const [lightbox, setLightbox] = useState(null); // { photo, rect }
+
+      const open = (e, photo) => {
+        // Grab the polaroid-card element's position so we can zoom from it
+        const card = e.currentTarget.querySelector('.polaroid-card');
+        const rect = (card || e.currentTarget).getBoundingClientRect();
+        setLightbox({ photo, rect });
+      };
+
+      return (
+        <div className="strip-outer">
+          <div className="strip-wire" aria-hidden="true" />
+          <div className="polaroid-strip">
+            {photos.map((photo, i) => (
+              <div
+                key={i}
+                className="polaroid-hanger"
+                style={{ marginTop: OFFSETS[i % OFFSETS.length] }}
+                onClick={e => open(e, photo)}
+                role="button" tabIndex={0}
+                aria-label={`View photo: ${photo.caption || i + 1}`}
+                onKeyDown={e => e.key === 'Enter' && open(e, photo)}
+              >
+                <div className="clip" />
+                <div className="polaroid-card"
+                  style={{ transform: `rotate(${TILTS[i % TILTS.length]}deg)` }}>
+                  <img
+                    src={photo.src}
+                    alt={photo.caption || `memory ${i + 1}`}
+                    className="polaroid-photo"
+                    style={{
+                      objectPosition: photo.crop || 'center',
+                      objectFit: photo.fit || 'cover',
+                    }}
+                    onError={e => { e.target.src = `https://placehold.co/420x420/F8ECEC/C4686A?text=📸`; }}
+                  />
+                  <div className="polaroid-tint" aria-hidden="true" />
+                  <div className="polaroid-hover-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                      stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                    </svg>
+                  </div>
+                  <p className="polaroid-caption">{photo.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {lightbox && (
+            <Lightbox
+              photo={lightbox.photo}
+              fromRect={lightbox.rect}
+              onClose={() => setLightbox(null)}
+            />
+          )}
+        </div>
+      );
+    };
+
+    /* ================================================================
+       TYPEWRITER HOOK — replays on every page change
+    ================================================================ */
+    const useTypewriter = (text, speed = 14) => {
+      const [displayed, setDisplayed] = useState('');
+      const [done, setDone]           = useState(false);
+      const idxRef = useRef(0);
+
+      useEffect(() => {
+        setDisplayed('');
+        setDone(false);
+        idxRef.current = 0;
+
+        const id = setInterval(() => {
+          const idx = idxRef.current;
+          if (idx >= text.length) { setDone(true); clearInterval(id); return; }
+          idxRef.current = idx + 1;
+          setDisplayed(prev => prev + (text[idx] ?? '')); // ?? '' guards against undefined char
+        }, speed);
+
+        return () => clearInterval(id);
+      }, [text, speed]);
+
+      return { displayed, done };
+    };
+
+    /* ================================================================
+       MESSAGE CARD
+    ================================================================ */
+    const MessageCard = ({ message }) => {
+      const { displayed, done } = useTypewriter(message, 20);
+      return (
+        <div className="message-card">
+          {/*
+            Two-layer trick: the ghost renders the full message invisibly so the
+            card is already its final height. The live text overlays it absolutely
+            so typing in never shifts the layout or moves the lightbox.
+          */}
+          <div className="message-text-wrap">
+            {/* Ghost — reserves the full height */}
+            <p className="message-text message-text-ghost" aria-hidden="true">{message}</p>
+            {/* Live — typewriter text overlaid on top */}
+            <p className="message-text message-text-live">
+              {displayed}
+              {!done && <span className="typewriter-cursor" aria-hidden="true" />}
+            </p>
+          </div>
+        </div>
+      );
+    };
+
+    /* ================================================================
+       SPOTIFY EMBED
+       Builds the src URL and appends &t=SECONDS for the start position.
+       If the viewer is logged into Spotify Premium in their browser,
+       the full song will play. Free accounts get a 30-second preview.
+    ================================================================ */
+    const SpotifyEmbed = ({ page }) => {
+      /* Append start-time param if the page defines spotifyStartAt > 0 */
+      const src = page.spotifyEmbed
+        + (page.spotifyStartAt > 0 ? `&t=${page.spotifyStartAt}` : '')
+        + '&autoplay=1';
+
+      return (
+        <div className="spotify-wrap">
+          <iframe
+            key={src} /* remount when src changes so the player resets */
+            src={src}
+            width="100%" height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            title={`Now playing — ${page.title}`}
+          />
+        </div>
+      );
+    };
+
+    /* ================================================================
+       NO PAGES FALLBACK
+    ================================================================ */
+    const EmptyState = () => (
+      <div style={{ textAlign:'center', padding:'80px 24px', color:'var(--text-soft)' }}>
+        <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.4rem', fontStyle:'italic' }}>
+          No pages loaded yet.
+        </p>
+        <p style={{ marginTop:12, fontSize:'0.85rem', letterSpacing:'0.05em' }}>
+          Add <code>&lt;script src="pages/page-1.js"&gt;&lt;/script&gt;</code> to index.html
+          and make sure the server is running.
+        </p>
+      </div>
+    );
+
+    /* ================================================================
+       INTRO SECTION
+       Each sections/section-N.js file pushes a data object here.
+       Fields: title, subtitle (opt), body, enterLabel (opt)
+    ================================================================ */
+    const IntroSection = ({ section, onNext, onPrev, isFirst, isLast }) => (
+      <div className="intro-screen">
+        <div className="intro-card">
+          {section.subtitle && <p className="intro-subtitle">{section.subtitle}</p>}
+          {section.title    && <h2 className="intro-title">{section.title}</h2>}
+          <div className="intro-ornament">
+            <div className="intro-ornament-line" />
+            <span className="intro-ornament-dot">✦</span>
+            <div className="intro-ornament-line flip" />
+          </div>
+          <p className="intro-body">{section.body}</p>
+          <div className="intro-nav">
+            <button className="nav-btn" onClick={onPrev}>
+              ← {isFirst ? 'Home' : 'Back'}
+            </button>
+            <button className="nav-btn" onClick={onNext}>
+              {section.enterLabel || (isLast ? 'Open Scrapbook →' : 'Continue →')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+
+    /* ================================================================
+       HOMEPAGE
+    ================================================================ */
+    const HomePage = ({ onEnter, exiting }) => {
+      return (
+        <div className={`home-screen${exiting ? ' exiting' : ''}`}>
+          {/* Centered note card */}
+          {/* ── Replace this message and name to personalize ── */}
+          <div className="home-note">
+            <div className="home-note-ornament">✦ ✦ ✦</div>
+            <p className="home-note-for">For you,</p>
+            <h1 className="home-note-name">Thalia</h1>
+            <p className="home-note-body">
+              Dear Thalia, I hope you've had a great birthday so far.<br />
+              This is a surprise project I've been working on for a little while now.<br />
+              <br />
+              The idea of it is a little digital scrapbook of memories, photos<br /> songs, and messages from your friends and I. We all are excited<br />
+              to share this with you! Hopefully it makes you as happy as you make us.<br />
+              To Thalia's friends and family, thank you so much for your help bringing this to life.<br />
+              To Thalia, this is for you. Happy Birthday! 🎉<br />
+              -Adnan<br />
+              <br />
+              (P.S. I don't make websites so my bad if this looks cooked 💀)
+
+            </p>
+            <button className="home-enter-btn" onClick={onEnter}>
+              Let's Go! →
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    /* ================================================================
+       PASSWORD GATE
+    ================================================================ */
+    const PasswordGate = ({ page, onUnlock }) => {
+      const [value, setValue]   = useState('');
+      const [error, setError]   = useState(false);
+      const [shake, setShake]   = useState(false);
+
+      const attempt = () => {
+        if (value === page.password) {
+          onUnlock();
+        } else {
+          setError(true);
+          setShake(true);
+          setValue('');
+          setTimeout(() => setShake(false), 500);
+        }
+      };
+
+      return (
+        <div className="pw-gate">
+          <div className={`pw-card${shake ? ' shake' : ''}`}>
+            <div className="pw-lock">🔒</div>
+            <h2 className="pw-title">This page is locked</h2>
+            <p className="pw-hint">Enter the password to continue.</p>
+            <input
+              className={`pw-input${error ? ' wrong' : ''}`}
+              type="password"
+              placeholder="Password"
+              value={value}
+              autoFocus
+              onChange={e => { setValue(e.target.value); setError(false); }}
+              onKeyDown={e => e.key === 'Enter' && attempt()}
+            />
+            {error && <p className="pw-error">Incorrect — try again.</p>}
+            <button className="pw-btn" onClick={attempt}>Unlock →</button>
+          </div>
+        </div>
+      );
+    };
+
+    /* ================================================================
+       ROOT APP  —  phase-based router
+       Flow:  'home'  →  'intro' (0…N)  →  'scrapbook'
+    ================================================================ */
+    const App = () => {
+      // phase: 'home' | 'intro' | 'scrapbook'
+      const [phase, setPhase]             = useState('home');
+      const [homeExiting, setHomeExiting] = useState(false);
+      const [introIdx, setIntroIdx]       = useState(0);
+      const [idx, setIdx]                 = useState(0);
+      const [visible, setVisible]         = useState(true);
+      const [shown, setShown]             = useState(0);
+      const [dark, setDark]               = useState(false);
+      const [menuOpen, setMenuOpen]       = useState(false);
+      const [unlockedPages, setUnlockedPages] = useState(() => new Set());
+
+      useEffect(() => {
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      }, [dark]);
+
+      const total  = pages.length;
+      const isLast = idx === total - 1;
+      const page   = pages[shown] || null;
+
+      /* Generic cross-fade: hide → swap state → show */
+      const fade = (fn) => {
+        window.scrollTo({ top: 0 });
+        setVisible(false);
+        setTimeout(() => { fn(); setVisible(true); }, 300);
+      };
+
+      /* ── Navigation ── */
+      const enterContent = () => {
+        setHomeExiting(true);
+        setTimeout(() => {
+          setHomeExiting(false);
+          if (introSections.length > 0) { setPhase('intro'); setIntroIdx(0); }
+          else                           { setPhase('scrapbook'); }
+        }, 550);
+      };
+
+      const goHome = () => fade(() => setPhase('home'));
+
+      const goNextIntro = () => {
+        if (introIdx < introSections.length - 1) fade(() => setIntroIdx(i => i + 1));
+        else                                      fade(() => setPhase('scrapbook'));
+      };
+      const goPrevIntro = () => {
+        if (introIdx > 0) fade(() => setIntroIdx(i => i - 1));
+        else              goHome();
+      };
+
+      const goTo = (nextIdx) => {
+        if (nextIdx < 0 || nextIdx >= total) return;
+        window.scrollTo({ top: 0 });
+        setVisible(false);
+        setTimeout(() => { setIdx(nextIdx); setShown(nextIdx); setVisible(true); }, 300);
+      };
+
+      /* Jump directly to any scrapbook page (used by nav menu) */
+      const goToPage = (pageIdx) => {
+        setMenuOpen(false);
+        window.scrollTo({ top: 0 });
+        setPhase('scrapbook');
+        setIdx(pageIdx);
+        setShown(pageIdx);
+        setVisible(true);
+        setHomeExiting(false);
+      };
+
+      /* On scrapbook page 1, "Back" goes to last intro (or home) */
+      const goScrapbookBack = () => {
+        if (introSections.length > 0)
+          fade(() => { setPhase('intro'); setIntroIdx(introSections.length - 1); });
+        else
+          goHome();
+      };
+
+      const fadeStyle = {
+        opacity:   visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(14px)',
+      };
+
+      return (
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
+
+          {/* ── Homepage overlay ── */}
+          {phase === 'home' && <HomePage onEnter={enterContent} exiting={homeExiting} />}
+
+          {/* ── Hearts: last page always, or any page with fireworks: true ── */}
+          {phase === 'scrapbook' && page && (isLast || page.fireworks) && <HeartParticles />}
+
+          {/* ── Fireworks: any page with fireworks: true ── */}
+          {phase === 'scrapbook' && page && page.fireworks && <Fireworks />}
+
+          {/* ── Hamburger menu button (always visible) ── */}
+          <button className="hamburger-btn" onClick={() => setMenuOpen(o => !o)} aria-label="Open navigation">
+            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="var(--rose)" strokeWidth="2" strokeLinecap="round">
+              <line x1="0" y1="1" x2="16" y2="1"/>
+              <line x1="0" y1="7" x2="16" y2="7"/>
+              <line x1="0" y1="13" x2="16" y2="13"/>
+            </svg>
+          </button>
+
+          {/* ── Slide-in nav menu ── */}
+          {menuOpen && (
+            <>
+              <div className="menu-backdrop" onClick={() => setMenuOpen(false)} />
+              <div className="menu-panel" role="navigation" aria-label="Page navigation">
+                <div className="menu-head">
+                  <div className="menu-head-title">For Thalia ❤️</div>
+                  <div className="menu-head-sub">Birthday Scrapbook</div>
+                </div>
+
+                <div className="menu-section-label">Navigate</div>
+                <button className="menu-item" onClick={() => { setMenuOpen(false); goHome(); }}>
+                  <span className="menu-item-num">⌂</span>
+                  <span className="menu-item-label">Home</span>
+                </button>
+
+                {introSections.length > 0 && <>
+                  <div className="menu-section-label">Intro</div>
+                  {introSections.map((s, i) => (
+                    <button key={i}
+                      className={`menu-item${phase === 'intro' && introIdx === i ? ' active' : ''}`}
+                      onClick={() => { setMenuOpen(false); fade(() => { setPhase('intro'); setIntroIdx(i); }); }}>
+                      <span className="menu-item-num">{i + 1}</span>
+                      <span className="menu-item-label">{s.title || `Intro ${i + 1}`}</span>
+                    </button>
+                  ))}
+                </>}
+
+                {pages.length > 0 && <>
+                  <div className="menu-section-label">Pages</div>
+                  {pages.map((p, i) => (
+                    <button key={i}
+                      className={`menu-item${phase === 'scrapbook' && idx === i ? ' active' : ''}`}
+                      onClick={() => goToPage(i)}>
+                      <span className="menu-item-num">{i + 1}</span>
+                      <span className="menu-item-label">{p.title || `Page ${i + 1}`}</span>
+                    </button>
+                  ))}
+                </>}
+              </div>
+            </>
+          )}
+
+          {/* ── Fixed UI (hidden on homepage) ── */}
+          {phase !== 'home' && (
+            <button className="home-btn" onClick={goHome} aria-label="Back to home" title="Home">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </button>
+          )}
+          <button className="theme-toggle" onClick={() => setDark(d => !d)}
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={dark ? 'Light mode' : 'Dark mode'}>
+            {dark ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            ) : (
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+          </button>
+
+          {/* ── Intro section ── */}
+          {phase === 'intro' && (
+            <div className="page-fade" style={fadeStyle}>
+              <IntroSection
+                section={introSections[introIdx]}
+                onNext={goNextIntro}
+                onPrev={goPrevIntro}
+                isFirst={introIdx === 0}
+                isLast={introIdx === introSections.length - 1}
+              />
+            </div>
+          )}
+
+          {/* ── Scrapbook ── */}
+          {phase === 'scrapbook' && (
+            <>
+              {/* Replace "Thalia" with the birthday person's name */}
+              <header className="header">
+                <h1 className="header-title">Happy Birthday, <span>Thalia</span> ❤️</h1>
+                <p className="header-subtitle">A little digital scrapbook for you</p>
+                <div className="header-ornament" aria-hidden="true">
+                  <div className="header-ornament-line" />
+                  <span className="header-ornament-dot">✦</span>
+                  <div className="header-ornament-line flip" />
+                </div>
+              </header>
+
+              {total === 0 ? <EmptyState /> : (
+                <>
+                  <div className="page-fade" style={fadeStyle}>
+                    {page.password && !unlockedPages.has(shown) ? (
+                      <PasswordGate
+                        key={`pw-${shown}`}
+                        page={page}
+                        onUnlock={() => setUnlockedPages(prev => new Set([...prev, shown]))}
+                      />
+                    ) : (
+                      <>
+                        <PolaroidStrip key={`strip-${shown}`} photos={page.photos} />
+                        <main className="main">
+                          <h2 className="page-chapter">{page.title}</h2>
+                          <SpotifyEmbed key={`spotify-${shown}`} page={page} />
+                        </main>
+                        <div className="message-outer">
+                          <MessageCard key={`msg-${shown}`} message={page.message} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <nav className="nav-bar" aria-label="Scrapbook navigation">
+                    <button className="nav-btn"
+                      onClick={() => idx === 0 ? goScrapbookBack() : goTo(idx - 1)}
+                      aria-label={idx === 0 ? 'Back' : 'Previous page'}>
+                      ← {idx === 0 ? 'Back' : 'Previous'}
+                    </button>
+                    <span className="nav-indicator" aria-live="polite">
+                      Page {idx + 1} of {total}
+                    </span>
+                    <button className="nav-btn"
+                      onClick={() => goTo(idx + 1)} disabled={isLast} aria-label="Next page">
+                      Next →
+                    </button>
+                  </nav>
+                </>
+              )}
+            </>
+          )}
+
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

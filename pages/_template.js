@@ -56,6 +56,14 @@
       { src: "/images/page-yourname/photo-5.jpg", caption: "caption five"             },
     ],
 
+    // ── Special effects (optional) ───────────────────────────
+    // Add celebrations: true to show hearts + fireworks on this page.
+    // celebrations: true,
+
+    // ── Password protection (optional) ───────────────────────
+    // Add password: 'yourword' to lock this page behind a prompt.
+    // password: 'yourword',
+
     // ── Your message ─────────────────────────────────────────
     // Write freely. A blank line between paragraphs = new paragraph in the card.
     // Keep line breaks as-is — they'll be preserved on screen.

@@ -2,7 +2,7 @@
   window.__SCRAPBOOK_PAGES__ = window.__SCRAPBOOK_PAGES__ || [];
 
   window.__SCRAPBOOK_PAGES__.push({
-    fireworks: true,
+    celebrations: true,
     password: 'thalia',   // ← change this to whatever password you want
     title: "Here's to You - Adnan",
     spotifyEmbed: "https://open.spotify.com/embed/track/6IAuH3hgTRpUUdmOGubXGS?utm_source=generator&theme=0",

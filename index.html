@@ -832,9 +832,13 @@
     const introSections  = window.__INTRO_SECTIONS__   || [];
 
     /* ================================================================
-       HEART PARTICLES — rendered only on the last page
+       CELEBRATION EFFECTS — hearts + optional fireworks
+       Usage: <CelebrationEffects withFireworks={true|false} />
+       Trigger on any page with fireworks: true in the page data.
     ================================================================ */
-    const HeartParticles = () => {
+    const COLORS = ['#F5A623','#C4686A','#E8B4B8','#FFD700','#FF85A1','#A8D8EA','#FFFFFF'];
+
+    const CelebrationEffects = ({ withFireworks }) => {
       const particles = useMemo(() => (
         Array.from({ length: 36 }, (_, i) => ({
           id:       i,
@@ -846,61 +850,56 @@
         }))
       ), []);
 
-      return (
-        <div className="hearts-layer" aria-hidden="true">
-          {particles.map(p => (
-            <div key={p.id} className="heart-particle"
-              style={{ left: p.left, fontSize: p.size, animationDelay: p.delay, animationDuration: p.duration }}>
-              {p.glyph}
-            </div>
-          ))}
-        </div>
-      );
-    };
-
-    /* ================================================================
-       FIREWORKS — rendered on pages with fireworks: true
-    ================================================================ */
-    const COLORS = ['#F5A623','#C4686A','#E8B4B8','#FFD700','#FF85A1','#A8D8EA','#FFFFFF'];
-    const Fireworks = () => {
       const bursts = useMemo(() => (
+        !withFireworks ? [] :
         Array.from({ length: 18 }, (_, i) => {
           const SPARKS = 10;
-          const dist = 80 + Math.random() * 70;
+          const dist   = 80 + Math.random() * 70;
           return {
-            id: i,
-            left: `${8 + Math.random() * 84}%`,
-            top:  `${8 + Math.random() * 58}%`,
+            id:       i,
+            left:     `${8 + Math.random() * 84}%`,
+            top:      `${8 + Math.random() * 58}%`,
             delay:    `${(Math.random() * 7).toFixed(2)}s`,
             duration: `${(2.8 + Math.random() * 2.5).toFixed(2)}s`,
-            sparks: Array.from({ length: SPARKS }, (_, j) => {
+            sparks:   Array.from({ length: SPARKS }, (_, j) => {
               const angle = (j / SPARKS) * Math.PI * 2;
               return {
-                dx: (Math.cos(angle) * dist).toFixed(1),
-                dy: (Math.sin(angle) * dist).toFixed(1),
+                dx:    (Math.cos(angle) * dist).toFixed(1),
+                dy:    (Math.sin(angle) * dist).toFixed(1),
                 color: COLORS[(i + j) % COLORS.length],
               };
             }),
           };
         })
-      ), []);
+      ), [withFireworks]);
 
       return (
-        <div className="fireworks-layer" aria-hidden="true">
-          {bursts.map(b => (
-            <div key={b.id} className="firework" style={{ left: b.left, top: b.top }}>
-              {b.sparks.map((s, j) => (
-                <span key={j} className="firework-spark" style={{
-                  '--dx': `${s.dx}px`,
-                  '--dy': `${s.dy}px`,
-                  background: s.color,
-                  animationDelay:    b.delay,
-                  animationDuration: b.duration,
-                }} />
+        <>
+          <div className="hearts-layer" aria-hidden="true">
+            {particles.map(p => (
+              <div key={p.id} className="heart-particle"
+                style={{ left: p.left, fontSize: p.size, animationDelay: p.delay, animationDuration: p.duration }}>
+                {p.glyph}
+              </div>
+            ))}
+          </div>
+          {withFireworks && (
+            <div className="fireworks-layer" aria-hidden="true">
+              {bursts.map(b => (
+                <div key={b.id} className="firework" style={{ left: b.left, top: b.top }}>
+                  {b.sparks.map((s, j) => (
+                    <span key={j} className="firework-spark" style={{
+                      '--dx': `${s.dx}px`, '--dy': `${s.dy}px`,
+                      background:        s.color,
+                      animationDelay:    b.delay,
+                      animationDuration: b.duration,
+                    }} />
+                  ))}
+                </div>
               ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       );
     };
 
@@ -912,6 +911,7 @@
       // 'open'    → element has transitioned to center
       // 'closing' → element shrinks back and fades out
       const [phase, setPhase] = useState('start');
+      const openedAt = useRef(Date.now());
 
       // Advance to 'open' after one paint so the browser captures the start state
       useEffect(() => {
@@ -920,6 +920,10 @@
       }, []);
 
       const close = () => {
+        // Guard against ghost clicks on mobile — the browser fires a synthetic click
+        // at the tap coordinates ~300ms after touchend, which would hit the backdrop
+        // and immediately close a lightbox that was just opened.
+        if (Date.now() - openedAt.current < 350) return;
         setPhase('closing');
         setTimeout(onClose, 280);
       };
@@ -1009,14 +1013,12 @@
     const TILTS   = [-2.8, 1.6, -1.2, 3.0, -2.0];
     const OFFSETS = [22, 10, 26, 8, 18];
 
-    const PolaroidStrip = ({ photos }) => {
-      const [lightbox, setLightbox] = useState(null); // { photo, rect }
-
+    const PolaroidStrip = ({ photos, onOpen }) => {
       const open = (e, photo) => {
         // Grab the polaroid-card element's position so we can zoom from it
         const card = e.currentTarget.querySelector('.polaroid-card');
         const rect = (card || e.currentTarget).getBoundingClientRect();
-        setLightbox({ photo, rect });
+        onOpen({ photo, rect });
       };
 
       return (
@@ -1058,13 +1060,6 @@
               </div>
             ))}
           </div>
-          {lightbox && (
-            <Lightbox
-              photo={lightbox.photo}
-              fromRect={lightbox.rect}
-              onClose={() => setLightbox(null)}
-            />
-          )}
         </div>
       );
     };
@@ -1278,6 +1273,7 @@
       const [dark, setDark]               = useState(false);
       const [menuOpen, setMenuOpen]       = useState(false);
       const [unlockedPages, setUnlockedPages] = useState(() => new Set());
+      const [lightbox, setLightbox]       = useState(null); // { photo, rect }
 
       useEffect(() => {
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -1352,11 +1348,10 @@
           {/* ── Homepage overlay ── */}
           {phase === 'home' && <HomePage onEnter={enterContent} exiting={homeExiting} />}
 
-          {/* ── Hearts: last page always, or any page with fireworks: true ── */}
-          {phase === 'scrapbook' && page && (isLast || page.fireworks) && <HeartParticles />}
-
-          {/* ── Fireworks: any page with fireworks: true ── */}
-          {phase === 'scrapbook' && page && page.fireworks && <Fireworks />}
+          {/* ── Celebration effects: add celebrations: true to any page data to enable ── */}
+          {phase === 'scrapbook' && page && page.celebrations && (
+            <CelebrationEffects withFireworks={true} />
+          )}
 
           {/* ── Hamburger menu button (always visible) ── */}
           <button className="hamburger-btn" onClick={() => setMenuOpen(o => !o)} aria-label="Open navigation">
@@ -1475,7 +1470,7 @@
                       />
                     ) : (
                       <>
-                        <PolaroidStrip key={`strip-${shown}`} photos={page.photos} />
+                        <PolaroidStrip key={`strip-${shown}`} photos={page.photos} onOpen={setLightbox} />
                         <main className="main">
                           <h2 className="page-chapter">{page.title}</h2>
                           <SpotifyEmbed key={`spotify-${shown}`} page={page} />
@@ -1506,6 +1501,15 @@
             </>
           )}
 
+
+          {/* ── Lightbox — rendered here so position:fixed is relative to viewport, not page-fade ── */}
+          {lightbox && (
+            <Lightbox
+              photo={lightbox.photo}
+              fromRect={lightbox.rect}
+              onClose={() => setLightbox(null)}
+            />
+          )}
         </div>
       );
     };

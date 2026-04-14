@@ -9,7 +9,7 @@
     spotifyStartAt: 0,
     // Drop photos into images/imgAdnan/ and reference them like: /images/imgAdnan/filename.jpg
     photos: [
-      { src: "/images/imgAdnan/photo-1.JPG", caption: "my favorite smile" },
+      { src: "/images/imgAdnan/photo-1.JPG", caption: "my favorite smile", zoom: 1.3 },
       { src: "/images/imgAdnan/photo-2.JPG", caption: "thank you Abbey!" },
       { src: "/images/imgAdnan/photo-3.JPG", caption: "first date!" },
       { src: "/images/imgAdnan/photo-4.JPG", caption: "goofball" },
